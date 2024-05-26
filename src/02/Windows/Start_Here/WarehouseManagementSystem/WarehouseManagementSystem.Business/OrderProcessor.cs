@@ -4,13 +4,9 @@ namespace WarehouseManagementSystem.Business
 {
     public class OrderProcessor
     {
-        public delegate void OrderInitializedEventHandler(Order order);
-        public delegate bool ShippingLabelProducedEventHandler(Order order);
-        public delegate bool OrderProcessedEventHandler(Order order);
-
-        public OrderInitializedEventHandler? OnOrderInitialized { get;  set; }
+        public Action<Order>? OnOrderInitialized { get;  set; }
         
-        public void Process(Order order, ShippingLabelProducedEventHandler shippingLabelProducedEvent, OrderProcessedEventHandler onCompleteEvent)
+        public void Process(Order order, Func<Order, bool> shippingLabelProducedEvent, Func<Order, bool> onCompleteEvent)
         {
             // Run some code..
 
