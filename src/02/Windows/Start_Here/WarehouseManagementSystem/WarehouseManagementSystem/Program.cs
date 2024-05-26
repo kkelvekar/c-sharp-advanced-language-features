@@ -29,9 +29,12 @@ orderProcessor.OnOrderInitialized += OrderInitialized; // += is used to add a me
 
 orderProcessor.OnOrderInitialized += order => order.IsReadyForShipment = true;
 
-orderProcessor.Process(new Order(), ShippingLabelProduced, OrderProcessed);
+// Order of assigning the event handlers matters, that is before calling the Process method
+orderProcessor.OnOrderCreated += (sender, e) => Console.WriteLine($"Order 1 {e.Order.OrderNumber} processed.");
+orderProcessor.OnOrderCreated += (sender, e) => Console.WriteLine($"Order 2 {e.Order.OrderNumber} processed.");
 
-//orderProcessor.Process(new Order(), (order) => { Console.WriteLine($"Shipping label produced for order {order.OrderNumber}."); return true; }, (order) => { Console.WriteLine($"Shipping label produced for order {order.OrderNumber}."); return true; });
+orderProcessor.Process(new Order(), ShippingLabelProduced);
+
 
 void OrderInitialized(Order order)
 {
@@ -56,11 +59,5 @@ void OrderInitialized(Order order)
 bool ShippingLabelProduced(Order order)
 {
     Console.WriteLine($"Shipping label produced for order {order.OrderNumber}.");
-    return true;
-}
-
-bool OrderProcessed(Order order)
-{
-    Console.WriteLine($"Order {order.OrderNumber} processed.");
     return true;
 }
