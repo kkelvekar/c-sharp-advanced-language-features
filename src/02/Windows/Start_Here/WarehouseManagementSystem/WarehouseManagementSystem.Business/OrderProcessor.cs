@@ -4,17 +4,32 @@ namespace WarehouseManagementSystem.Business
 {
     public class OrderProcessor
     {
-        private void Initialize(Order order)
-        {
-        }
+        public delegate void OrderInitializedEventHandler(Order order);
+        public delegate bool ShippingLabelProducedEventHandler(Order order);
+        public delegate bool OrderProcessedEventHandler(Order order);
 
-        public void Process(Order order)
+        public OrderInitializedEventHandler? OnOrderInitialized { get;  set; }
+        
+        public void Process(Order order, ShippingLabelProducedEventHandler shippingLabelProducedEvent, OrderProcessedEventHandler onCompleteEvent)
         {
             // Run some code..
 
             Initialize(order);
 
-            // How do I produce a shipping label?
+            if (shippingLabelProducedEvent?.Invoke(order) ?? false)
+            {
+
+                onCompleteEvent?.Invoke(order);
+            }
+            
+        }
+
+        private void Initialize(Order order)
+        {
+            ArgumentNullException.ThrowIfNull(order, nameof(order));
+
+            order.IsReadyForShipment = true;
+            OnOrderInitialized?.Invoke(order);
         }
     }
 }
