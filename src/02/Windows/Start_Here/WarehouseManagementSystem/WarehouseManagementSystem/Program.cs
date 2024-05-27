@@ -35,7 +35,9 @@ orderProcessor.OnOrderCreated += (sender, e) => Console.WriteLine($"Order 2 {e.O
 
 orderProcessor.Process(new Order(), ShippingLabelProduced);
 
-
+orderProcessor.Process(new Order() as object); // This will call the Process(object order) method, method overloading puzzle
+orderProcessor.Process(new Order());
+ 
 void OrderInitialized(Order order)
 {
     order = new Order
@@ -53,7 +55,7 @@ void OrderInitialized(Order order)
         }
     };
 
-    Console.WriteLine($"Order {order.OrderNumber} initialized.");
+    Console.WriteLine($"Order {order.OrderNumber} initialized."); 
 }
 
 bool ShippingLabelProduced(Order order)
