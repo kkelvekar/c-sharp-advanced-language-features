@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WarehouseManagementSystem.Business\WarehouseManagementSystem.Business.csproj" />
+    <ProjectReference Include="..\WarehouseManagementSystem.Domain.Extensions\WarehouseManagementSystem.Domain.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

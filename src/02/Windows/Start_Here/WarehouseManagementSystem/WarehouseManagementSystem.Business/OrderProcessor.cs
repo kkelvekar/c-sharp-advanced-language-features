@@ -55,6 +55,26 @@ namespace WarehouseManagementSystem.Business
             // copy.TotalCount = 20; // This will not compile because the copy or og anonymous type is immutable or reado only
         }
 
+        // This method is demonstating the use of Tuple in C# with list, Tuple is value type, basically a special kind of struct
+        public IEnumerable<(Guid OrderNumber, int TotalCount, decimal TotalPrice)> GetOrderSummeries(IEnumerable<Order> orders)
+        {
+            var summeries = orders.Select(order =>
+            (
+                order.OrderNumber,
+                TotalCount : order.LineItems.Count(),
+                TotalPrice : order.LineItems.Sum(item => item.Price)
+            ));
+
+            return summeries;
+        }
+
+        // This method is demonstating the use of Tuple in C#.
+        public (decimal TotalPrice, decimal TotalPriceWithTax) GetTotalOrderSummary(Order order)
+        {
+            var summery = (TotalPrice: order.LineItems.Sum(item => item.Price), TotalPriceWithTax: order.LineItems.Sum(item => item.Price) * 1.25m);
+            return summery;
+        }
+
         // Why this method ? Relax it is just a standard pattern to follow
         protected virtual void OnOrderProcessed(OrderProcessEventArgs e)
         {

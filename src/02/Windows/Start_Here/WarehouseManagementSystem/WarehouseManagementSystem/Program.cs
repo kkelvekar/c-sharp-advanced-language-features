@@ -1,9 +1,9 @@
 ﻿
 using WarehouseManagementSystem.Business;
 using WarehouseManagementSystem.Domain;
+using WarehouseManagementSystem.Domain.Extensions;
 
 var orderProcessor = new OrderProcessor();
-
 
 orderProcessor.OnOrderInitialized += order =>
 {
@@ -37,6 +37,24 @@ orderProcessor.Process(new Order(), ShippingLabelProduced);
 
 orderProcessor.Process(new Order() as object); // This will call the Process(object order) method, method overloading puzzle
 orderProcessor.Process(new Order());
+
+// Usinng Extension method to get new orders
+var orders = new List<Order>().GetNewOrders();
+
+// Using Tuple method
+var (totalPrice, totalPriceWithTax) = orderProcessor.GetTotalOrderSummary(orders.FirstOrDefault());
+Console.WriteLine($"Total price: {totalPrice}, Total price with tax: {totalPriceWithTax}");
+
+// Using IEnumerable<(Guid OrderNumber, int TotalCount, decimal TotalPrice)> tuple method
+var summeries = orderProcessor.GetOrderSummeries(orders);
+foreach (var summary in summeries)
+{
+    Console.WriteLine($"Order {summary.OrderNumber} has {summary.TotalCount} items with total price of {summary.TotalPrice}");
+}
+
+// Deconstructing the class object into multiple variables using Deconstruct method
+var (orderNumber, _, total, _,_) = orders.First();
+Console.WriteLine($"Order number: {orderNumber}, Total: {total}");
  
 void OrderInitialized(Order order)
 {
