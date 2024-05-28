@@ -28,11 +28,12 @@ namespace WarehouseManagementSystem.Domain.Extensions
                 },
                 new Order
                 {
-                    ShippingProvider = new SwedishPostalServiceShippingProvider
+                    ShippingProvider = new BritishPostalServiceShippingProvider
                     {
                         Name = "British Postal Service",
                         FreightCost = 300,
-                        DeliverNextDay = true
+                        DeliverNextDay = true,
+                        VAT = 0.2m
                     },
                     LineItems = new List<Item>
                     {

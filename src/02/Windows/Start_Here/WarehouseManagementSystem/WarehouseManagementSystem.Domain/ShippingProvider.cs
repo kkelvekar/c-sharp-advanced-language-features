@@ -11,4 +11,11 @@
     {
         public bool DeliverNextDay { get; set; }
     }
+
+    public class BritishPostalServiceShippingProvider : ShippingProvider
+    {
+        public bool DeliverNextDay { get; set; }
+
+        public decimal VAT { get; set; }
+    }
 }

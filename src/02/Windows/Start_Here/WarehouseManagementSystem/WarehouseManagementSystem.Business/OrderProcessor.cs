@@ -75,6 +75,19 @@ namespace WarehouseManagementSystem.Business
             return summery;
         }
 
+        // This method is demonstating the use of Switch expression in C# 8
+        public decimal CalculateFreightCost(Order order)
+        {
+            var totalWeight = order.LineItems.Sum(item => item.Weight);
+            var totalCost = order.ShippingProvider switch
+            {         
+                SwedishPostalServiceShippingProvider provider => totalWeight * provider.FreightCost,
+                BritishPostalServiceShippingProvider provider => totalWeight * provider.FreightCost,
+                var provider => totalWeight * provider.FreightCost,
+            };
+            return totalCost;
+        }
+
         // Why this method ? Relax it is just a standard pattern to follow
         protected virtual void OnOrderProcessed(OrderProcessEventArgs e)
         {
